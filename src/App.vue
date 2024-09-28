@@ -35,7 +35,7 @@ export default {
     this.categories = JSON.parse(localStorage.getItem('n2me:categories')) || ['note']  
     this.sessions = JSON.parse(localStorage.getItem('n2me:sessions')) || []
     this.openAIKey = localStorage.getItem('n2me:openAIKey') || ''
-    const lang = localStorage.getItem('n2me:language') || 'en-US'
+    const lang = localStorage.getItem('n2me:language') || 'it-IT'
     buildSpeecher({lang})
   },
   data() {
