@@ -32,7 +32,7 @@ import { buildSpeecher, startSpeecher, stopSpeecher } from './speecher'
 
 export default {
   mounted() {
-    this.categories = JSON.parse(localStorage.getItem('n2me:categories')) || []  
+    this.categories = JSON.parse(localStorage.getItem('n2me:categories')) || ['note']  
     this.sessions = JSON.parse(localStorage.getItem('n2me:sessions')) || []
     this.openAIKey = localStorage.getItem('n2me:openAIKey') || ''
     const lang = localStorage.getItem('n2me:language') || 'en-US'
