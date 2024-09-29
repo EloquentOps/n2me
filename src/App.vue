@@ -7,7 +7,7 @@
 
     <div class="row" v-if="!session">
       <div class="button" v-for="category in categories" :key="category">
-        <button @click="startSession(category)">{{ category }}</button>
+        <button @click="startSession(category)">{{ category.name }}</button>
       </div>
     </div>
 
@@ -29,18 +29,21 @@
 <script>
 import axios from 'axios'
 import { buildSpeecher, startSpeecher, stopSpeecher } from './speecher'
+import { addItem, getCategories, getSettings } from './db'
 
 export default {
-  mounted() {
-    this.categories = JSON.parse(localStorage.getItem('n2me:categories')) || ['note']  
+  async mounted() {
+    this.categories = await getCategories()
+    this.settings = await getSettings()
+
     this.sessions = JSON.parse(localStorage.getItem('n2me:sessions')) || []
-    this.openAIKey = localStorage.getItem('n2me:openAIKey') || ''
-    const lang = localStorage.getItem('n2me:language') || 'it-IT'
+
+    const lang = this.settings.find(s => s.key === 'lang').value
     buildSpeecher({lang})
   },
   data() {
     return {
-
+      settings: [],
       categories: [],
       sessions: [],
 
@@ -71,7 +74,8 @@ export default {
         category: this.category,
         text: this.text
       })
-      localStorage.setItem('n2me:sessions', JSON.stringify(this.sessions))
+
+      addItem(this.text, this.category.id)
 
       this.session = null
     }
