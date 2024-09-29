@@ -1,8 +1,11 @@
 import { PGlite } from '@electric-sql/pglite'
 
-const db = new PGlite('idb://n2me-database')
+let db
 
-await db.exec(`
+const init = async () => {
+    db = new PGlite('idb://n2me-database')
+    
+    await db.exec(`
     CREATE TABLE IF NOT EXISTS settings (
         id SERIAL PRIMARY KEY,
         key TEXT UNIQUE,
@@ -34,6 +37,7 @@ await db.exec(`
         added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 `)
+}
 
 const addItem = async (content, category_id) => {
     await db.sql`INSERT INTO items (content, category_id) VALUES (${content}, ${category_id});`
@@ -85,6 +89,7 @@ const getSettings = async () => {
 }
 
 export { 
+    init,
     addItem, 
     addCategory, 
     
@@ -93,5 +98,5 @@ export {
     getItems,
     editSetting, 
     deleteCategory,
-    deleteItem
+    deleteItem,
 }
