@@ -30,7 +30,8 @@
 
 
 <script>
-import { getSettings, editSetting } from '../db'
+import { getSettings, editSetting, importItems } from '../db'
+import Papa from 'papaparse'
 
 export default {
     data() {
@@ -42,7 +43,9 @@ export default {
     }, 
     async mounted() {
         const settings = await getSettings()
-        this.language = settings.find(s => s.key === 'lang').value
+        this.language = settings.find(s => s.key === 'lang')?.value
+        this.llmProvider = settings.find(s => s.key === 'llm_provider')?.value
+        this.apiKey = settings.find(s => s.key === 'llm_api_key')?.value
     },
     methods: {
         async updateLanguage() {
@@ -52,6 +55,12 @@ export default {
         async importData(e) {
             const file = e.target.files[0]
             console.log(file)
+
+            const text = await file.text()
+            const result = Papa.parse(text, { header: true })
+            console.log(result)
+
+            await importItems(result.data)
         },
         async updateLLMProvider() {
             console.log(this.llmProvider)

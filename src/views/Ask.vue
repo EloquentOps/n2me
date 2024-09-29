@@ -7,18 +7,35 @@
 </template>
 
 <script>
-//import { askQuestion } from '../db'
+import { getLLMPayload } from '../llms'
+import { getSettings } from '../db'
+import axios from 'axios'
 
 export default {
     data() {
         return {
-            question: ''
+            question: '',
+            llm_provider: '',
+            api_key: ''
         }
+    },
+    async mounted() {
+        const settings = await getSettings()
+        this.llm_provider = settings.find(s => s.key === 'llm_provider')?.value
+        this.api_key = settings.find(s => s.key === 'llm_api_key')?.value
     },
     methods: {
         async ask() {
-            // const answer = await askQuestion(this.question)
-            // console.log(answer)
+            const { payload, url } = getLLMPayload({vendor: this.llm_provider, question: this.question})
+
+            const res = await axios(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.api_key}`
+                },
+                data: payload
+            })
         }
     }
 }

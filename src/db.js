@@ -4,7 +4,7 @@ let db
 
 const init = async () => {
     db = new PGlite('idb://n2me-database')
-    
+
     await db.exec(`
     CREATE TABLE IF NOT EXISTS settings (
         id SERIAL PRIMARY KEY,
@@ -33,7 +33,7 @@ const init = async () => {
     CREATE TABLE IF NOT EXISTS items (
         id SERIAL PRIMARY KEY,
         content TEXT,
-        category_id INTEGER,
+        category_id INTEGER DEFAULT 1,
         added TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     );
 `)
@@ -88,6 +88,17 @@ const getSettings = async () => {
     return settings[0].rows
 }
 
+const importItems = async (items) => {
+    let sql = ''
+    items.forEach(item => {
+        if (item.content && item.added) {
+            sql += `INSERT INTO items (content, added, category_id) VALUES ('${item.content}', '${new Date(item.added).toISOString()}', 1);\n`
+        }
+    })
+    console.log(sql)
+    await db.exec(`${sql}`)
+}
+
 export { 
     init,
     addItem, 
@@ -99,4 +110,5 @@ export {
     editSetting, 
     deleteCategory,
     deleteItem,
+    importItems
 }
