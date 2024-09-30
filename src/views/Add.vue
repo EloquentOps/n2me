@@ -1,5 +1,4 @@
 <template>
-    <div>
 
         <div class="row" v-if="!session">
           <div class="button" v-for="category in categories" :key="category">
@@ -17,7 +16,6 @@
           <button @click="saveSession()">Save</button>
         </div>
 
-    </div>
 </template>
 
 
@@ -79,10 +77,8 @@ export default {
 
 
 <style scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
+.add {
+  width: 100%;
 }
 
 

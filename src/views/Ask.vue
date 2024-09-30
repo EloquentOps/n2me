@@ -1,12 +1,16 @@
 <template>
     <div class="ask">
-        <input type="text" v-model="question" @keyup.enter="ask" placeholder="Ask a question">
-        <button @click="ask" :disabled="isLoading">Ask</button>
-        <a href="" @click.prevent="deleteHistory" v-if="history.length > 0">Delete previous answers</a>
-        <div class="answer">
-            <p v-if="isLoading">Loading...</p>
-            <div v-else v-html="answer"></div>
+
+        <div class="ask-body">
+            <div v-html="answer"></div>
         </div>
+
+        <div class="ask-prompt">
+            <input type="text" v-model="question" @keyup.enter="ask" placeholder="Ask a question">
+            <button @click="ask" :disabled="isLoading">Ask</button>            
+        </div>
+        <a href="" @click.prevent="deleteHistory" v-if="history.length > 0">Delete previous answers</a>
+        
     </div>
 </template>
 
@@ -79,3 +83,36 @@ export default {
     }
 }
 </script>
+
+
+
+<style scoped>
+.ask {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.ask-prompt {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.ask-prompt input {
+    flex: 1;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+}
+
+.ask-prompt button {
+    margin-left: 1rem;
+}
+
+.ask-body {
+    flex: 1;
+    width: 100%;
+}
+
+</style>

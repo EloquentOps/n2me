@@ -2,7 +2,7 @@
     <div class="header">
         <div class="header-content">
             <div class="header-logo">
-                <h1><router-link to="/">n2me</router-link> / {{ $route.name }}</h1>
+                <h1><router-link to="/">n2me</router-link> → {{ $route.name }}</h1>
             </div>
 
             <div class="header-menu">
@@ -11,20 +11,20 @@
                 </button>
                 <ul class="header-menu-list" v-if="isMenuOpen" @click="toggleMenu">
                     <li>
-                        <router-link to="/">Home</router-link>
+                        <router-link to="/">Add</router-link>
                     </li>
-                    <li>
-                        <router-link to="/categories">Categories</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/items">Items</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/settings">Settings</router-link>
-                    </li>
+
                     <li>
                         <router-link to="/ask">Ask</router-link>
                     </li>
+
+                    <li>
+                        <router-link to="/settings">Settings</router-link>
+                    </li>
+
+                   
+                    
+                   
                 </ul>
             </div>
         </div>
@@ -81,6 +81,16 @@ export default {
 
 .header-menu {
 
+}
+
+h1 {
+    color: #444;
+    margin: 0;
+}
+
+a {
+    text-decoration: none;
+    color: #000;
 }
 
 .header-menu-list {

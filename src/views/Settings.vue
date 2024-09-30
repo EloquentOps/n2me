@@ -35,6 +35,13 @@
 
 
         <div class="settings-section">
+            <h2>Meta data</h2>
+            <p><router-link to="/categories">Manage Categories</router-link></p>
+            <p><router-link to="/items">Manage Items</router-link></p>
+        </div>
+
+
+        <div class="settings-section">
             <h2>Export Data</h2>
             <button @click="exportData">Export Data</button>
         </div>

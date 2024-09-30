@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Main from './views/Main.vue'
+import Add from './views/Add.vue'
 import Categories from './views/Categories.vue'
 import Items from './views/Items.vue'
 import Settings from './views/Settings.vue'
@@ -9,23 +9,23 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'main',
-      component: Main
+      name: 'Add',
+      component: Add
     },
     {
       path: '/categories',
-      name: 'categories',
+      name: 'Categories',
       component: Categories
     },
     {
       path: '/settings',
-      name: 'settings',
+      name: 'Settings',
       component: Settings
     },
     
     {
-      path: '/items',
-      name: 'items',
+      path: '/writings',
+      name: 'Writings',
       component: Items
     },
     {
