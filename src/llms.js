@@ -2,6 +2,8 @@ const systemPrompt = items => `
 You are a helpful assistant.
 You are given a list of my writings and a question.
 You answer exclusively based on the writings.
+Do not reiterate the question, the fact that you are an assistant, or that you are helping the user.
+Do not reiterate that you found the answer in the writings.
 Here are the writings:
 
 <MY_WRITINGS>
@@ -10,6 +12,11 @@ ${JSON.stringify(items)}
 
 Answer the question based exclusively on the provided writings.
 If you don't know the answer, just say so.
+Return a JSON object with the following format:
+{
+    "markdown": "The answer in Markdown format",
+    "references": [1, 2, 3] // The indices of the writings that helped you answer the question
+}
 `
 
 const urls = {
@@ -19,6 +26,32 @@ const urls = {
 const payloads = {
     openai(question, items, history){
         return {
+            response_format: {
+                type: 'json_schema',
+                json_schema: {
+                    name: 'answer_response',
+                    strict: true,
+                    schema: {
+                        type: 'object',
+                        properties: {
+                            markdown: {
+                                type: 'string',
+                                description: 'The answer in Markdown format'
+                            },
+                            references: {
+                                type: 'array',
+                                items: {
+                                    type: 'integer',
+                                    description: 'The indices of the writings that helped you answer the question'
+                                }
+                            }
+                        },
+                        required: ['markdown', 'references'],
+                        additionalProperties: false
+                    }
+                },
+            },
+            temperature: 0,
             model: 'gpt-4o-mini',
             messages: [
                 {role: 'system', content: systemPrompt(items)},

@@ -2,7 +2,7 @@
     <div class="ask">
         <input type="text" v-model="question" @keyup.enter="ask" placeholder="Ask a question">
         <button @click="ask" :disabled="isLoading">Ask</button>
-        <a href="" @click.prevent="deleteHistory">Delete previous answers</a>
+        <a href="" @click.prevent="deleteHistory" v-if="history.length > 0">Delete previous answers</a>
         <div class="answer">
             <p v-if="isLoading">Loading...</p>
             <div v-else v-html="answer"></div>
@@ -24,7 +24,8 @@ export default {
             answer: '',
             isLoading: false,
             history: [],
-            items: []
+            items: [],
+            references: []
         }
     },
     async mounted() {
@@ -58,8 +59,12 @@ export default {
             const { message } = choices[0]
             const { content } = message
 
-            this.answer = marked.parse(content)
+            const { markdown, references } = JSON.parse(content)
+            this.answer = marked.parse(markdown)
+            this.references = references
+
             this.history.push({question: this.question, answer: content})
+
             this.question = ''
             this.isLoading = false
         },
