@@ -1,6 +1,9 @@
 <template>
   <Header />
-  <RouterView />
+
+  <div class="container">
+    <RouterView />
+  </div>
 </template>
 
 <script>
@@ -17,3 +20,10 @@ export default {
 }
 </script>
 
+<style scoped>
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+</style>

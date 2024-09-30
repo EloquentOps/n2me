@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div>
 
         <div class="row" v-if="!session">
           <div class="button" v-for="category in categories" :key="category">

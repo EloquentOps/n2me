@@ -1,6 +1,5 @@
 <template>
-    <div class="container">
-        <h1>Categories</h1>
+    <div>
         <ul class="categories">
             <li class="category" v-for="category in categories" :key="category.id">
                 {{ category.name }}

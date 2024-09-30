@@ -1,6 +1,5 @@
 <template>
     <div>
-        <h1>Items</h1>
         <ul>
             <li v-for="item in items" :key="item.id">
                 <span>{{ item.content }} [{{ item.category_name }}] ({{ item.added }}) <button @click="deleteItem(item.id)">x</button></span>

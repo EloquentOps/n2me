@@ -1,9 +1,11 @@
 import { PGlite } from '@electric-sql/pglite'
 
+const DB_NAME = 'n2me-database'
+
 let db
 
 const init = async () => {
-    db = new PGlite('idb://n2me-database')
+    db = new PGlite(`idb://${DB_NAME}`)
 
     await db.exec(`
     CREATE TABLE IF NOT EXISTS settings (
@@ -16,6 +18,7 @@ const init = async () => {
     DO $$ BEGIN
         IF NOT EXISTS (SELECT 1 FROM settings WHERE key = 'lang') THEN
             INSERT INTO settings (key, value, type) VALUES ('lang', 'en-US', 'general');
+            INSERT INTO settings (key, value, type) VALUES ('main_input_device', 'text', 'general');
         END IF;
     END $$;
 
@@ -92,11 +95,39 @@ const importItems = async (items) => {
     let sql = ''
     items.forEach(item => {
         if (item.content && item.added) {
-            sql += `INSERT INTO items (content, added, category_id) VALUES ('${item.content}', '${new Date(item.added).toISOString()}', 1);\n`
+            const cnt = item.content.replace(/'/g, "’")
+            sql += `INSERT INTO items (content, added, category_id) VALUES ('${cnt}', '${new Date(item.added).toISOString()}', ${item.category_id || 1});\n`
         }
     })
-    console.log(sql)
     await db.exec(`${sql}`)
+}
+
+
+const closeDatabase = async () => {
+    await db.close()
+    console.log('Database closed', db.closed)
+}
+
+const deleteDatabase = () => {
+    return new Promise((resolve, reject) => {
+
+        const request = indexedDB.deleteDatabase('/pglite/' + DB_NAME)
+
+        request.onsuccess = function() {
+            console.log('Database deleted successfully')
+            resolve()
+        }
+
+        request.onerror = function() {
+            console.error('Error deleting database')
+            reject()
+        }
+
+        request.onblocked = function() {
+            console.warn(`Delete operation for '${DB_NAME}' is blocked. Please close all connections.`)
+            resolve()
+    }
+    })
 }
 
 export { 
@@ -110,5 +141,7 @@ export {
     editSetting, 
     deleteCategory,
     deleteItem,
-    importItems
+    importItems,
+    deleteDatabase,
+    closeDatabase
 }
