@@ -20,6 +20,7 @@ export default {
         return {
             question: '',
             llm_provider: '',
+            llm_model: '',
             api_key: '',
             answer: '',
             isLoading: false,
@@ -30,7 +31,9 @@ export default {
     },
     async mounted() {
         const settings = await getSettings()
+
         this.llm_provider = settings.find(s => s.key === 'llm_provider')?.value
+        this.llm_model = settings.find(s => s.key === 'llm_model')?.value
         this.api_key = settings.find(s => s.key === 'llm_api_key')?.value
 
         this.items = await getItems()
@@ -40,6 +43,7 @@ export default {
             this.isLoading = true
             const { payload, url } = getLLMPayload({
                 vendor: this.llm_provider, 
+                model: this.llm_model,
                 question: this.question, 
                 history: this.history,
                 items: this.items

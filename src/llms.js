@@ -23,8 +23,17 @@ const urls = {
     openai: 'https://api.openai.com/v1/chat/completions'
 }
 
+export const models = {
+    openai: [
+        'gpt-4o-mini',
+        'gpt-4o',
+        'gpt-4',
+        'gpt-3.5-turbo'
+    ]
+}
+
 const payloads = {
-    openai(question, items, history){
+    openai(model, question, items, history){
         return {
             response_format: {
                 type: 'json_schema',
@@ -52,7 +61,7 @@ const payloads = {
                 },
             },
             temperature: 0,
-            model: 'gpt-4o-mini',
+            model: model,
             messages: [
                 {role: 'system', content: systemPrompt(items)},
                 ...history.map(h => ({role: 'user', content: h.question})),
@@ -64,9 +73,9 @@ const payloads = {
 }
 
 
-export const getLLMPayload = ({vendor, question, items, history}) => {
+export const getLLMPayload = ({vendor, model, question, items, history}) => {
     return {
-        payload: payloads[vendor](question, items, history),
+        payload: payloads[vendor](model, question, items, history),
         url: urls[vendor]
     }
 }

@@ -26,6 +26,9 @@
                 <option value="">none</option>
                 <option value="openai">OpenAI</option>
             </select>
+            <select v-model="llmModel">
+                <option v-for="model in models[llmProvider]" :key="model" :value="model">{{ model }}</option>
+            </select>
             <input type="text" v-model="apiKey" placeholder="API Key">
             <button @click="updateLLMProvider">Update LLM Provider</button>
         </div>
@@ -51,6 +54,7 @@
 
 <script>
 import { getSettings, editSetting, importItems, getItems, deleteDatabase, closeDatabase } from '../db'
+import { models } from '../llms'
 import Papa from 'papaparse'
 
 export default {
@@ -59,14 +63,19 @@ export default {
             language: '',
             llmProvider: '',
             apiKey: '',
-            mainInputDevice: ''
+            mainInputDevice: '',
+            llmModel: '',
+            models: models
         }
     }, 
     async mounted() {
         const settings = await getSettings()
         this.language = settings.find(s => s.key === 'lang')?.value
+
         this.llmProvider = settings.find(s => s.key === 'llm_provider')?.value
+        this.llmModel = settings.find(s => s.key === 'llm_model')?.value
         this.apiKey = settings.find(s => s.key === 'llm_api_key')?.value
+
         this.mainInputDevice = settings.find(s => s.key === 'main_input_device')?.value
     },
     methods: {
@@ -88,9 +97,9 @@ export default {
             }
         },
         async updateLLMProvider() {
-            await editSetting('llm_provider', this.llmProvider, 'general')
-            await editSetting('llm_api_key', this.apiKey, 'general')
-            
+            await editSetting('llm_provider', this.llmProvider, 'llm')
+            await editSetting('llm_api_key', this.apiKey, 'llm')
+            await editSetting('llm_model', this.llmModel, 'llm')
         },
         async exportData() {
             const items = await getItems()
