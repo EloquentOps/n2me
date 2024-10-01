@@ -1,9 +1,11 @@
 <template>
-
-        <div class="row" v-if="!session">
+  <div class="add">   
+        <div class="row btn-group" v-if="!session">
           <div class="button" v-for="category in categories" :key="category">
-            <button @click="startTextSession(category)">TXT {{ category.name }}</button>
-            <button @click="startAudioSession(category)">AUX {{ category.name }}</button>
+            <div class="button-opz">
+              <button @click="startSessionBy(category, mainInputDevice)">{{ category.name }}</button>
+              <button @click="startSessionBy(category, mainInputDevice === 'text' ? 'voice' : 'text')">{{ mainInputDevice === 'text' ? 'V' : 'T' }}</button>
+            </div>
           </div>
         </div>
 
@@ -12,10 +14,11 @@
         </div>
 
         <div class="row" v-if="session==='review'">
+          <button @click="session=null">x</button>
           <textarea v-model="text"></textarea>
           <button @click="saveSession()">Save</button>
         </div>
-
+      </div>
 </template>
 
 
@@ -35,12 +38,16 @@ export default {
 
     const lang = this.settings.find(s => s.key === 'lang').value
     buildSpeecher({lang})
+
+    this.mainInputDevice = this.settings.find(s => s.key === 'main_input_device')?.value || 'text'
   },
   data() {
     return {
       settings: [],
       categories: [],
       sessions: [],
+
+      mainInputDevice: '',
 
       session: null,
       category: null,
@@ -51,6 +58,17 @@ export default {
     }
   },
   methods: {
+
+    startSessionBy(category, device) {
+     if(this.mainInputDevice === device){
+      this.startTextSession(category)
+     }else{
+      this.startAudioSession(category)
+     }
+    },
+
+
+
     startTextSession(category) {
       this.session = 'review'
       this.category = category
@@ -79,12 +97,27 @@ export default {
 <style scoped>
 .add {
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
-
+.btn-group{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  max-width: 300px;
+}
+.btn-group .button{
+  width: 100%;
+}
 .row {
   padding: 1rem;
   text-align: center;
+  width: 100%;
+  
 }
 </style>
 

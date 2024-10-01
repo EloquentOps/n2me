@@ -97,18 +97,13 @@ export default {
     display: flex;
     flex-direction: row;
     width: 100%;
+    gap: .5rem;
 }
 
 .ask-prompt input {
-    flex: 1;
-    padding: 0.5rem;
-    font-size: 1rem;
-    border: 1px solid #ccc;
+    flex:1;
 }
 
-.ask-prompt button {
-    margin-left: 1rem;
-}
 
 .ask-body {
     flex: 1;

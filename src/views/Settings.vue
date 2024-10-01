@@ -22,15 +22,17 @@
 
         <div class="settings-section">
             <h2>LLM Provider</h2>
-            <select v-model="llmProvider">
+            <div class="inline">
+                <select v-model="llmProvider">
                 <option value="">none</option>
                 <option value="openai">OpenAI</option>
-            </select>
-            <select v-model="llmModel">
-                <option v-for="model in models[llmProvider]" :key="model" :value="model">{{ model }}</option>
-            </select>
-            <input type="text" v-model="apiKey" placeholder="API Key">
-            <button @click="updateLLMProvider">Update LLM Provider</button>
+                </select>
+                <select v-model="llmModel">
+                    <option v-for="model in models[llmProvider]" :key="model" :value="model">{{ model }}</option>
+                </select>
+                <input type="text" v-model="apiKey" placeholder="API Key">
+                <button @click="updateLLMProvider">Update LLM Provider</button>
+            </div>
         </div>
 
 
@@ -126,3 +128,12 @@ export default {
     }
 }
 </script>
+
+
+<style scoped>
+.inline{
+    display: flex;
+    flex-direction: row;
+    gap: .5rem;
+}
+</style>

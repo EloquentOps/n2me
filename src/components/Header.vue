@@ -88,10 +88,13 @@ h1 {
     margin: 0;
 }
 
-a {
+.header-menu-list a {
     text-decoration: none;
     color: #000;
+    padding: 1.5rem 3rem;
+    display: block;
 }
+
 
 .header-menu-list {
     display: flex;
@@ -107,9 +110,6 @@ a {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-.header-menu-list li {
-    padding: 10px;
 }
 
 </style>
