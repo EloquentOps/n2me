@@ -6,9 +6,9 @@
             </div>
 
             <div class="header-menu">
-                <button @click="toggleMenu">
-                    +
-                </button>
+                <a class="header-menu-toggle" href="" @click.prevent="toggleMenu">
+                    |||
+                </a>
                 <ul class="header-menu-list" v-if="isMenuOpen" @click="toggleMenu">
                     <li>
                         <router-link to="/">Add</router-link>
@@ -22,9 +22,6 @@
                         <router-link to="/settings">Settings</router-link>
                     </li>
 
-                   
-                    
-                   
                 </ul>
             </div>
         </div>
@@ -88,11 +85,20 @@ h1 {
     margin: 0;
 }
 
+a {
+    text-decoration: none;
+}
+
 .header-menu-list a {
     text-decoration: none;
     color: #000;
     padding: 1.5rem 3rem;
     display: block;
+    border-radius: .5rem;
+}
+
+.header-menu-list a:hover {
+    background-color: #fff;
 }
 
 
@@ -110,6 +116,17 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+
+.header-menu-toggle {
+    text-decoration: none;
+    color: #999;
+    display: block;
+    border-radius: .5rem;
+    padding: 1rem;
+    font-size: 1.2rem;
+    background-color: #fff;
+    transform: rotate(90deg);
 }
 
 </style>
